@@ -10,6 +10,8 @@ import datos.Cliente;
 import datos.ClienteDatos;
 import datos.Productos;
 import datos.ProductosDatos;
+import herencia.ClaseHija_Suma;
+import herencia.ClaseHija_Resta;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -241,6 +243,21 @@ public class Boleta extends JFrame {
         // Creando el Marco
         Boleta ex = new Boleta();
         ex.setVisible(true);
+
+
+        //Herencia 
+        ClaseHija_Suma herenciaSuma = new ClaseHija_Suma();
+        herenciaSuma.PedirDatos();
+        herenciaSuma.Sumar();
+        System.out.println("El resultado de la suma es:");
+        herenciaSuma.MostrarResultado();
+
+        ClaseHija_Resta herenciaResta = new ClaseHija_Resta();
+        herenciaResta.PedirDatos();
+        herenciaResta.Restar();
+        System.out.println("El resultado de la resta es:");
+        herenciaResta.MostrarResultado();
+
     }
 
 }
