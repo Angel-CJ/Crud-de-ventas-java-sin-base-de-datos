@@ -6,29 +6,29 @@ import java.util.List;
 /**
  * ContactoData DAO está el CRUD
  */
-public class ClienteDatos {
-    List<Cliente> listaClientes = new ArrayList<Cliente>();
+public class ProductosDatos {
+    List<Productos> listaProductos = new ArrayList<Productos>();
 
-    public List<Cliente> list() {
-        return listaClientes;
+    public List<Productos> list() {
+        return listaProductos;
     }
 
-    public void create(Cliente c) {
-        listaClientes.add(c);
+    public void create(Productos c) {
+        listaProductos.add(c);
         // System.out.println(d.getNombre()+" is created!");
     }
 
-    public void delete(Cliente c) {
-        listaClientes.remove(c);
+    public void delete(Productos c) {
+        listaProductos.remove(c);
     }
 
     public void delete(int id) {
         boolean existe = false;
-        for (Cliente c : listaClientes) {
-            System.out.println("Deleted:"+c.getId() + "\t" + c.getNombre());
+        for (Productos c : listaProductos) {
+            System.out.println("Deleted:"+c.getId() + "\t" + c.getProductos());
             if (id == c.getId()) {
                 try {
-                    listaClientes.remove(c);
+                    listaProductos.remove(c);
                     //listaContactos.update();
 
                 } catch (java.util.ConcurrentModificationException e2) {

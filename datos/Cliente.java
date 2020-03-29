@@ -5,9 +5,7 @@ public class Cliente {
     private int id;
     private String nombre;
     private String documento;
-    private String producto;
-    private String precio;
-
+    
     public int getId() {
         return id;
     }
@@ -16,15 +14,6 @@ public class Cliente {
         this.id = id;
     }
     
-    public int getId2() {
-        return id;
-    }
-
-    public void setId2(int id) {
-        this.id = id;
-    }
-
-
     public String getNombre() {
         return nombre;
     }
@@ -37,23 +26,7 @@ public class Cliente {
         return documento;
     }
 
-    public void setDocumento(String documento) {
+   public void setDocumento(String documento) {
         this.documento = documento;
-    }
-
-    public String getProducto() {
-        return producto;
-    }
-
-    public void setProducto(String producto) {
-        this.producto = producto;
-    }
-
-    public String getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(String precio) {
-        this.precio = precio;
     }
 }

@@ -8,7 +8,8 @@ import javax.swing.table.*;
 
 import datos.Cliente;
 import datos.ClienteDatos;
-
+import datos.Productos;
+import datos.ProductosDatos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ public class Boleta extends JFrame {
     private static final long serialVersionUID = 1L;
     // CRUD Contacto
     int clientId = 0;
-    int productId = 0;
+   
     ClienteDatos clientDatos = new ClienteDatos();
     String[] clientColumns = { "Id", "Nombre","Documento"};
     String[][] clientMatriz = new String[0][clientColumns.length];
@@ -31,6 +32,8 @@ public class Boleta extends JFrame {
     
     //Crud Productos
     //ProductDatos productDatos = new ProductDatos();
+     int productId = 0;
+    ProductosDatos productosDatos = new ProductosDatos();
     String[] productsColumns = { "Id","Producto","Precio"};
     String[][] productsMatriz = new String[0][productsColumns.length];
     DefaultTableModel model2 = new DefaultTableModel(productsMatriz, productsColumns);
@@ -154,17 +157,17 @@ public class Boleta extends JFrame {
         btnadd2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 productId++;
-                Cliente d = new Cliente();
-                d.setId2(productId);
-                d.setProducto(clientTxtProducto.getText());
-                clientDatos.create(d);
+                Productos d = new Productos();
+                d.setId(productId);
+                d.setProductos(clientTxtProducto.getText());
+                productosDatos.create(d);
                 d.setPrecio(clientTxtPrecio.getText());  
 
-                List<Cliente> miLista = clientDatos.list();
+                List<Productos> miLista = productosDatos.list();
                 productsMatriz = new String[miLista.size()][productsColumns.length];
                 for (int i = 0; i < miLista.size(); i++) {
-                    productsMatriz[i][0] = miLista.get(i).getId2() + "";
-                    productsMatriz[i][1] = miLista.get(i).getProducto() + "";
+                    productsMatriz[i][0] = miLista.get(i).getId() + "";
+                    productsMatriz[i][1] = miLista.get(i).getProductos() + "";
                     productsMatriz[i][2] = miLista.get(i).getPrecio() + "";
                 }
                 model2 = new DefaultTableModel(productsMatriz, productsColumns);
@@ -190,7 +193,7 @@ public class Boleta extends JFrame {
                     // remove selected row from the model
                     model2.removeRow(productTable.getSelectedRow());
                     try {
-                        clientDatos.remove(id);
+                        productosDatos.delete(id);
                     } catch (java.util.ConcurrentModificationException e2) {
                         System.out.println("Contacto si exist e2="+e2);
                     }
