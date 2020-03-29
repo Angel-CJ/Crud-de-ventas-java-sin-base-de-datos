@@ -9,6 +9,7 @@ import javax.swing.table.*;
 import datos.Cliente;
 import datos.ClienteDatos;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -20,13 +21,23 @@ public class Boleta extends JFrame {
     private static final long serialVersionUID = 1L;
     // CRUD Contacto
     int clientId = 0;
+    int productId = 0;
     ClienteDatos clientDatos = new ClienteDatos();
-    String[] clientColumns = { "Id", "Nombre","Documento","Producto","Precio"};
+    String[] clientColumns = { "Id", "Nombre","Documento"};
     String[][] clientMatriz = new String[0][clientColumns.length];
     DefaultTableModel model = new DefaultTableModel(clientMatriz, clientColumns);
     JTable contactoTable = new JTable(model);
     JScrollPane clientSP = new JScrollPane();
-
+    
+    //Crud Productos
+    //ProductDatos productDatos = new ProductDatos();
+    String[] productsColumns = { "Id","Producto","Precio"};
+    String[][] productsMatriz = new String[0][productsColumns.length];
+    DefaultTableModel model2 = new DefaultTableModel(productsMatriz, productsColumns);
+    JTable productTable = new JTable(model2);
+    JScrollPane productSP = new JScrollPane();
+    //end table
+    
     // CRUD Contacto End
 
     public Boleta() {
@@ -51,12 +62,6 @@ public class Boleta extends JFrame {
         JLabel clientLblDocumento = new JLabel("Ingrese Documento de identidad:");
         JTextField clientTxtDocumento = new JTextField();
 
-        JLabel clientLblProducto = new JLabel("Ingrese el Producto:");
-        JTextField clientTxtProducto = new JTextField();
-
-        JLabel clientLblPrecio = new JLabel("Ingrese el Precio:");
-        JTextField clientTxtPrecio = new JTextField();
-
         JButton btnadd = new JButton("Agregar");
         JButton button;
         button = new JButton("Remove");
@@ -65,10 +70,6 @@ public class Boleta extends JFrame {
         clientPanel.add(clientTxtNombre);
         clientPanel.add(clientLblDocumento);
         clientPanel.add(clientTxtDocumento);
-        clientPanel.add(clientLblProducto);
-        clientPanel.add(clientTxtProducto);
-        clientPanel.add(clientLblPrecio);
-        clientPanel.add(clientTxtPrecio);
         clientPanel.add(btnadd);
         clientPanel.add(button);
         clientPanel.add(clientSP);
@@ -81,8 +82,7 @@ public class Boleta extends JFrame {
                 d.setNombre(clientTxtNombre.getText());
                 clientDatos.create(d);
                 d.setDocumento(clientTxtDocumento.getText());
-                d.setProducto(clientTxtProducto.getText());
-                d.setPrecio(clientTxtPrecio.getText());  
+                
 
                 List<Cliente> miLista = clientDatos.list();
                 clientMatriz = new String[miLista.size()][clientColumns.length];
@@ -90,8 +90,6 @@ public class Boleta extends JFrame {
                     clientMatriz[i][0] = miLista.get(i).getId() + "";
                     clientMatriz[i][1] = miLista.get(i).getNombre() + "";
                     clientMatriz[i][2] = miLista.get(i).getDocumento() + "";
-                    clientMatriz[i][3] = miLista.get(i).getProducto() + "";
-                    clientMatriz[i][4] = miLista.get(i).getPrecio() + "";
                 }
                 model = new DefaultTableModel(clientMatriz, clientColumns);
                 contactoTable = new JTable(model);// f5 table
@@ -131,13 +129,77 @@ public class Boleta extends JFrame {
 
         // CRUD Producto
         JPanel productoPanel = new JPanel();
+
         productoPanel.setLayout(new BoxLayout(productoPanel, BoxLayout.Y_AXIS));
-        JLabel productoLblNombre = new JLabel("Ingrese Producto:");
 
-        productoPanel.add(productoLblNombre);
-        // CRUD Producto End
 
-        // Actions del JFrame
+        JLabel clientLblProducto = new JLabel("Ingrese el Producto:");
+        JTextField clientTxtProducto = new JTextField();
+
+        JLabel clientLblPrecio = new JLabel("Ingrese el Precio:");
+        JTextField clientTxtPrecio = new JTextField();
+
+        JButton btnadd2 = new JButton("Agregar");
+        JButton button2;
+        button2 = new JButton("Remove");
+        productSP.setViewportView(productTable);
+        productoPanel.add(clientLblProducto);
+        productoPanel.add(clientTxtProducto);
+        productoPanel.add(clientLblPrecio);
+        productoPanel.add(clientTxtPrecio);
+        productoPanel.add(btnadd2);
+        productoPanel.add(button2);
+        productoPanel.add(productSP);
+
+        btnadd2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                productId++;
+                Cliente d = new Cliente();
+                d.setId2(productId);
+                d.setProducto(clientTxtProducto.getText());
+                clientDatos.create(d);
+                d.setPrecio(clientTxtPrecio.getText());  
+
+                List<Cliente> miLista = clientDatos.list();
+                productsMatriz = new String[miLista.size()][productsColumns.length];
+                for (int i = 0; i < miLista.size(); i++) {
+                    productsMatriz[i][0] = miLista.get(i).getId2() + "";
+                    productsMatriz[i][1] = miLista.get(i).getProducto() + "";
+                    productsMatriz[i][2] = miLista.get(i).getPrecio() + "";
+                }
+                model2 = new DefaultTableModel(productsMatriz, productsColumns);
+                productTable = new JTable(model2);// f5 table
+                productSP.setViewportView(productTable);// f5 table
+
+            }
+        });
+
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                // check for selected row first
+                if (productTable.getSelectedRow() != -1) {
+                    String ids = null;
+                    int[] row = productTable.getSelectedRows();
+                    ids = (String) productTable.getValueAt(row[0], 0);
+                    System.out.println("Table element selected es: " + ids);
+                    int id = Integer.parseInt(ids);
+                    clientTxtProducto.setText(" " + id);
+                    
+                    
+                    // remove selected row from the model
+                    model2.removeRow(productTable.getSelectedRow());
+                    try {
+                        clientDatos.remove(id);
+                    } catch (java.util.ConcurrentModificationException e2) {
+                        System.out.println("Contacto si exist e2="+e2);
+                    }
+                    
+
+                   // JOptionPane.showMessageDialog(null, "Selected row deleted successfully");
+                }
+            }
+        });
         m11.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 System.out.println("Ir a contactos");
